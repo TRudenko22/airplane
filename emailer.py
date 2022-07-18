@@ -1,5 +1,10 @@
 from dataclasses import dataclass
+from datetime import date
 import smtplib
+import typer
+
+
+APP = typer.Typer()
 
 
 @dataclass
@@ -34,10 +39,33 @@ class EmailSender:
             server.sendmail(self.email.sender, self.email.recipient, self.email.body)
 
 
-#TODO:
-# - Add logging
-# - Add TOML config file
-# - Add Text parsing for email object
+@APP.command()
+def send_email(recipient: str, subject: str, body: str):
+    """Send an email.""" 
+
+    # Hardcoded for now.
+    # Later, I'll use a config file or something.
+    password = "your_gmail_app_password"
+    sender = "Your email"
+
+    email_content = Email(
+        sender=sender,
+        recipient=recipient,
+        subject=subject,
+        body=body,
+    )
+
+    email_sender = EmailSender(
+        email=email_content,
+        smtp_user=email_content.sender,
+        smtp_password=password,
+    )
+
+    email_sender.send()
+    print(EmailMessage(email_content, date.today()))
 
 
+if __name__ == "__main__":
+    APP()
 
+    

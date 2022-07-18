@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+RECIP="$1"
+SUBJECT="$2"
+NOTE="note_$(date +%m-%d-%Y)"
+
+vim "/tmp/${NOTE}"
+
+wait $!
+
+echo "Email created $(date)"
+
+python3 emailer.py "$RECIP" "$SUBJECT" "$(cat "/tmp/$NOTE")" 
