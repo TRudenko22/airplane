@@ -10,4 +10,11 @@ wait $!
 
 echo "Email created $(date)"
 
-python3 emailer.py "$RECIP" "$SUBJECT" "$(cat "/tmp/$NOTE")" 
+read -p "would you like to continue?: " RESP
+
+if [[ "$RESP" =~ (y|Y|yes) ]]; then
+    python3 emailer.py "$RECIP" "$SUBJECT" "$(cat "/tmp/$NOTE")" 
+else
+    rm $NOTE
+    exit
+fi
